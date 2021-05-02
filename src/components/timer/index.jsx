@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
-import { scaleLinear } from "d3-scale";
+import { stringifyTime, ColorRange } from "../../functions";
 
-const Timer = () => {
-  const [counter, setCounter] = useState(3000);
+const Timer = ({ setGameOver }) => {
+  const [counter, setCounter] = useState(3100);
   const [color, setColor] = useState("#000");
 
   useEffect(() => {
     counter > 0 && setTimeout(() => setCounter(counter - 1), 100);
-    const newColor = scaleLinear()
-      .domain([300, 110, 100, 0])
-      .range(["#7DDE92", "#F9C784", "#EA1D76", "#EF2D56"]);
-    setColor(newColor(counter));
+    const newColor = ColorRange(counter)
+    setColor(newColor);
+    counter === 0 && setGameOver(true)
   }, [counter]);
 
   return (
@@ -18,30 +17,31 @@ const Timer = () => {
       style={{
         width: "100vw",
         display: "flex",
-        justifyContent: "center",
-        margin: "24px 0px 4px 0px",
+        justifyContent: "flex-end",
+        margin: "24px 0px 4px -35.3%",
       }}
     >
       <p
         style={{
-          color: "#FAFAFF",
+          color: "#DADADF",
           fontFamily: "Arial",
           fontSize: "26px",
           fontWeight: 100,
         }}
       >
-        Time left:{" "}
+        Tiempo restante:
         <span
           style={{
             color: color,
             fontFamily: "Arial",
             fontSize: "26px",
             fontWeight: 100,
+
+            margin: '1px 0px 0px 20px',
+            position: 'absolute'
           }}
         >
-          {counter.toString().substring(0, 3) +
-            "." +
-            counter.toString().substring(3, 4)}
+          {stringifyTime(counter) || ''} segundos
         </span>
       </p>
     </div>

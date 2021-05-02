@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 const url =
   "https://i.pinimg.com/474x/a9/94/dc/a994dc0fd62763bb2cf9bc81c5e24100.jpg";
 
-const Card = ({ idx, handleClick, side, done, value }) => {
+const Card = ({ idx, handleClick, side, done, value, disabled, gameOver }) => {
   const animeRef = useRef(null);
   const style = {
     opacity: 0,
@@ -60,7 +60,10 @@ const Card = ({ idx, handleClick, side, done, value }) => {
     });
   };
   const internalClick = () => {
-    !done && handleClick(idx);
+    if (gameOver) {
+      return
+    }
+    !disabled && !done && handleClick(idx);
     return;
   };
   return (
